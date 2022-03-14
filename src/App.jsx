@@ -1,13 +1,14 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, Fragment } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { TodoList } from "./components/TodoList";
-import "./App.css";
+import Header from "./components/Header";
+import "./App.sass";
 
 const KEY = "todoApp.todos";
 
 export function App() {
 	const [todos, setTodos] = useState([
-		{ id: uuidv4(), task: "Tarea 1", completed: false },
+		{ id: uuidv4(), task: "Task 1", completed: false },
 	]);
 
 	const todoTaskRef = useRef();
@@ -45,37 +46,42 @@ export function App() {
 	};
 
 	return (
-		<section className="tasks-box">
-			<article className="tasks">
-				<h1>Pending tasks</h1>
-				<p className="tasks__pending">
-					Te quedan {todos.filter((todo) => !todo.completed).length} tareas por
-					terminar
-				</p>
+		<Fragment>
+			<Header />
+			<main>
+				<article className="tasks">
+					<h2 className="tasks__title">Pending</h2>
+					<p className="tasks__pending">
+						You have {todos.filter((todo) => !todo.completed).length} tasks left
+						to finish
+					</p>
 
-				<TodoList todos={todos} toggleTodo={toggleTodo} />
+					<TodoList todos={todos} toggleTodo={toggleTodo} />
 
-				<input
-					ref={todoTaskRef}
-					type="text"
-					className="tasks__input"
-					placeholder="New task"
-				></input>
-				<button
-					title="Add task"
-					className="tasks__button"
-					onClick={handlerTodoAdd}
-				>
-					<i className="bi bi-plus-lg"></i>
-				</button>
-				<button
-					title="Delete task"
-					className="tasks__button --delete"
-					onClick={handlerClearAll}
-				>
-					<i className="bi bi-trash-fill"></i>
-				</button>
-			</article>
-		</section>
+					<input
+						ref={todoTaskRef}
+						type="text"
+						className="tasks__input"
+						placeholder="New task"
+					></input>
+					<div className="tasks__btn-container">
+						<button
+							title="Add task"
+							className="tasks__button --add"
+							onClick={handlerTodoAdd}
+						>
+							<i className="bi bi-plus-lg"></i> Add
+						</button>
+						<button
+							title="Delete task"
+							className="tasks__button --delete"
+							onClick={handlerClearAll}
+						>
+							<i className="bi bi-trash-fill"></i> Delete
+						</button>
+					</div>
+				</article>
+			</main>
+		</Fragment>
 	);
 }
